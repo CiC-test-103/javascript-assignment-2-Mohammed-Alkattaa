@@ -5,9 +5,12 @@ class Bank {
         this.accounts = []; // Stores all accounts in the bank
     }
 
-    // Add methods here:
-    // Example: createAccount(name, initialDeposit)
-
+    // Create a new account and store it in the bank
+    createAccount(name, initialDeposit = 0) {
+        const account = new Account(name, initialDeposit);
+        this.accounts.push(account);
+        return account;
+    }
 }
 
 // Account Class: Represents a single user's account
@@ -18,20 +21,49 @@ class Account {
         this.transactionHistory = []; // Keeps a record of all transactions
     }
 
-    // Add methods here:
-    // Example: deposit(amount) 
-    // example data to be stored in transactionHistory { transactionType: 'Deposit', amount: 500 }
+    // Deposit money
+    deposit(amount) {
+        this.balance += amount;
+        this.transactionHistory.push({
+            transactionType: 'Deposit',
+            amount: amount
+        });
+    }
 
-    // Example: withdraw(amount)
-    // example data to be stored in transactionHistory { transactionType: 'Withdrawal', amount: 200 }
+    // Withdraw money
+    withdraw(amount) {
+        this.balance -= amount;
+        this.transactionHistory.push({
+            transactionType: 'Withdrawal',
+            amount: amount
+        });
+    }
 
-    // Example: transfer(amount, recipientAccount)
-    // example data to be stored in transactionHistory:
-    // for account sending { transactionType: 'Transfer', amount: 300, to: recipientName }
-    // for account recieving { transactionType: 'Received', amount: 300, from: senderName }
-    
-    // Example: checkBalance()
+    // Transfer money to another account
+    transfer(amount, recipientAccount) {
+        // sender
+        this.balance -= amount;
+        this.transactionHistory.push({
+            transactionType: 'Transfer',
+            amount: amount,
+            to: recipientAccount.name
+        });
+
+        // receiver
+        recipientAccount.balance += amount;
+        recipientAccount.transactionHistory.push({
+            transactionType: 'Received',
+            amount: amount,
+            from: this.name
+        });
+    }
+
+    // Check balance
+    checkBalance() {
+        return this.balance;
+    }
 }
+
 
 //<-------------------------------DO NOT WRITE BELOW THIS LINE------------------------------>
 
